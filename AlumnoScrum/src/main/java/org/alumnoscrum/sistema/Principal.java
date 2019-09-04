@@ -8,6 +8,7 @@ package org.alumnoscrum.sistema;
 import java.util.Scanner;
 import org.alumnoscrum.dominio.Alumno;
 import org.alumnoscrum.dao.AlumnoJpaController;
+import org.alumnoscrum.dao.exceptions.NonexistentEntityException;
 
 /**
  *
@@ -46,6 +47,33 @@ public class Principal {
                     System.out.println("se agrego al alumno con exito");
                 }else
                     System.out.println("no se logro guardar al alumno");
+                break;
+                
+            case 3:
+            a = obtenerAlumno();
+            System.out.println(a);
+            System.out.println("Ingrese los datos nuevos");
+            a = new Alumno(id, salumno.nextLine(), salumno.nextLine(),salumno.nextLine(),salumno.nextLine(),salumno.nextLine(),salumno.nextLine());
+
+            try {
+                alumnoDao.editarAlumno(a);
+                System.out.println("Registro actualizado correctamente");
+            } catch (Exception ex) {
+                System.out.println("No se puede actualizar el registro");
+            }
+            break;
+            
+            case 4:
+                a = obtenerAlumno();
+                System.out.println("¿Esta seguro de eliminar al siguiente alumno?");
+                System.out.println(a);
+            
+                try {
+                    alumnoDao.eliminarAlumno(id);
+                    System.out.println("Registro eliminado correctamente");
+                } catch (NonexistentEntityException ex) {
+                    System.out.println("No se puede eliminar el registro");
+                }
                 break;
             default:
                 System.out.println("no es una opcion del menu...");
