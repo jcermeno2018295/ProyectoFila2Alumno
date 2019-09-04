@@ -5,6 +5,8 @@
  */
 package org.alumnoscrum.sistema;
 
+import java.util.Iterator;
+import java.util.List;
 import java.util.Scanner;
 import org.alumnoscrum.dominio.Alumno;
 import org.alumnoscrum.dao.AlumnoJpaController;
@@ -22,62 +24,81 @@ public class Principal {
     private static int op, id;
     
     public static void main(String[] args) {
-        System.out.println("----Menu De Opciones-------------------");
-        System.out.println("---------------------------------------");
-        System.out.println("---- 1. Mostrar Alumno por ID Alumno---"); 
-        System.out.println("---- 2. Agregar Alumno al SGBD --------");
-        System.out.println("---- 3. Actualizar una Resgistro ------");
-        System.out.println("---- 4. Eliminar una Registro ---------");
-        System.out.println("---- 5. Listar Alumnos ----------------");
-        System.out.println("---- 6. Salir del menu ----------------");
-        System.out.println("---------------------------------------");
-        System.out.println("---- Elija una Opcion------------------");
-        op = sc.nextInt();
         
-        switch (op) {
-            case 1: 
-                a= obtenerAlumno();
-                System.out.println(a);        
-                
-                break;
-                
-            case 2:
-                a = getAlumno();
-                if(alumnoDao.agregarAlumno(a)){
-                    System.out.println("se agrego al alumno con exito");
-                }else
-                    System.out.println("no se logro guardar al alumno");
-                break;
-                
-            case 3:
-            a = obtenerAlumno();
-            System.out.println(a);
-            System.out.println("Ingrese los datos nuevos");
-            a = new Alumno(id, salumno.nextLine(), salumno.nextLine(),salumno.nextLine(),salumno.nextLine(),salumno.nextLine(),salumno.nextLine());
+        do{
+            System.out.println("----Menu De Opciones-------------------");
+            System.out.println("---------------------------------------");
+            System.out.println("---- 1. Mostrar Alumno por ID Alumno---"); 
+            System.out.println("---- 2. Agregar Alumno al SGBD --------");
+            System.out.println("---- 3. Actualizar una Resgistro ------");
+            System.out.println("---- 4. Eliminar una Registro ---------");
+            System.out.println("---- 5. Listar Alumnos ----------------");
+            System.out.println("---- 6. Salir del menu ----------------");
+            System.out.println("---------------------------------------");
+            System.out.println("---- Elija una Opcion------------------");
+            op = sc.nextInt();
 
-            try {
-                alumnoDao.editarAlumno(a);
-                System.out.println("Registro actualizado correctamente");
-            } catch (Exception ex) {
-                System.out.println("No se puede actualizar el registro");
-            }
-            break;
-            
-            case 4:
+            switch (op) {
+                case 1: 
+                    a= obtenerAlumno();
+                    System.out.println(a);        
+
+                    break;
+
+                case 2:
+                    a = getAlumno();
+                    if(alumnoDao.agregarAlumno(a)){
+                        System.out.println("se agrego al alumno con exito");
+                    }else
+                        System.out.println("no se logro guardar al alumno");
+                    break;
+
+                case 3:
                 a = obtenerAlumno();
-                System.out.println("¿Esta seguro de eliminar al siguiente alumno?");
                 System.out.println(a);
-            
+                System.out.println("Ingrese los datos nuevos");
+                a = new Alumno(id, salumno.nextLine(), salumno.nextLine(),salumno.nextLine(),salumno.nextLine(),salumno.nextLine(),salumno.nextLine());
+
                 try {
-                    alumnoDao.eliminarAlumno(id);
-                    System.out.println("Registro eliminado correctamente");
-                } catch (NonexistentEntityException ex) {
-                    System.out.println("No se puede eliminar el registro");
+                    alumnoDao.editarAlumno(a);
+                    System.out.println("Registro actualizado correctamente");
+                } catch (Exception ex) {
+                    System.out.println("No se puede actualizar el registro");
                 }
                 break;
-            default:
-                System.out.println("no es una opcion del menu...");
-        }
+
+                case 4:
+                    a = obtenerAlumno();
+                    System.out.println("¿Esta seguro de eliminar al siguiente alumno?");
+                    System.out.println(a);
+
+                    try {
+                        alumnoDao.eliminarAlumno(id);
+                        System.out.println("Registro eliminado correctamente");
+                    } catch (NonexistentEntityException ex) {
+                        System.out.println("No se puede eliminar el registro");
+                    }
+                    break;
+
+                case 5:
+                      List <Alumno> alumnos= alumnoDao.listarAlumnos();
+                        for(Iterator<Alumno> iterator= alumnos.iterator(); iterator.hasNext();){
+                                Alumno nex = iterator.next();
+                                System.out.println(nex);
+                        }
+                break;
+
+                case 6:
+                        System.out.println("Ha finalizado sesion...");	
+                        alumnoDao.cerrar();
+                break;
+
+
+                default:
+                    System.out.println("no es una opcion del menu...");
+            }
+        
+        }while(op != 6);
     }
     
     public static Alumno obtenerAlumno(){
