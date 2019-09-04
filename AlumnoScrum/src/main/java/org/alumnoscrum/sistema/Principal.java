@@ -32,5 +32,36 @@ public class Principal {
         System.out.println("---------------------------------------");
         System.out.println("---- Elija una Opcion------------------");
         op = sc.nextInt();
+        
+        switch (op) {
+            case 1: 
+                a= obtenerAlumno();
+                System.out.println(a);        
+                
+                break;
+                
+            case 2:
+                a = getAlumno();
+                if(alumnoDao.agregarAlumno(a)){
+                    System.out.println("se agrego al alumno con exito");
+                }else
+                    System.out.println("no se logro guardar al alumno");
+                break;
+            default:
+                System.out.println("no es una opcion del menu...");
+        }
+    }
+    
+    public static Alumno obtenerAlumno(){
+        System.out.println("Ingrese el codigo de el alumno");
+        id = sc.nextInt();
+        a = alumnoDao.buscarAlumno(id);
+        return a;
+    }
+    
+    private static Alumno getAlumno(){
+        System.out.println("Ingrese el codigo, carnet, nombres, apellidos, edad, carrera, seccion del alumno");
+        Alumno a = new Alumno(sc.nextInt(),salumno.nextLine(),salumno.nextLine(),salumno.nextLine(),salumno.nextLine(),salumno.nextLine(),salumno.nextLine());
+        return a;
     }
 }
